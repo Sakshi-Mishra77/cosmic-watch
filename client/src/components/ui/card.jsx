@@ -20,9 +20,20 @@ const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
 ))
 CardTitle.displayName = "CardTitle"
 
+// ✅ ADDED: CardDescription Component
+const CardDescription = React.forwardRef(({ className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={utilsCn("text-sm text-gray-400", className)}
+    {...props}
+  />
+))
+CardDescription.displayName = "CardDescription"
+
 const CardContent = React.forwardRef(({ className, ...props }, ref) => (
   <div ref={ref} className={utilsCn("px-4 sm:px-6 pb-4 sm:pb-6 pt-0", className)} {...props} />
 ))
 CardContent.displayName = "CardContent"
 
-export { Card, CardHeader, CardTitle, CardContent }
+
+export { Card, CardHeader, CardTitle, CardDescription, CardContent }

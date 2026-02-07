@@ -4,7 +4,7 @@ import AsteroidCard from '../components/AsteroidCard';
 import StatCard from '../components/StatCard';
 import FeaturedAsteroidCard from '../components/FeaturedAsteroidCard';
 import DashboardControls from '../components/DashboardControls';
-import { Activity, AlertTriangle, ShieldCheck, Telescope, Sparkles } from 'lucide-react';
+import { Activity, AlertTriangle, Telescope, Sparkles, Star } from 'lucide-react'; // Changed ShieldCheck to Star
 
 const Dashboard = () => {
   const [asteroids, setAsteroids] = useState([]);
@@ -13,21 +13,29 @@ const Dashboard = () => {
   const [filterRisk, setFilterRisk] = useState('all');
   const [sortBy, setSortBy] = useState('risk-desc');
 
+  // FETCH FUNCTION
+  const fetchData = async () => {
+    try {
+      // In production, this would be your actual API endpoint
+      const res = await axios.get('http://localhost:5000/api/asteroids');
+      setAsteroids(res.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // INITIAL LOAD & AUTO-REFRESH (30s)
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/api/asteroids');
-        setAsteroids(res.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+    fetchData(); // Initial fetch
+    
+    const intervalId = setInterval(() => {
+        fetchData(); // Re-fetch every 30 seconds
+    }, 30000);
 
+    return () => clearInterval(intervalId); // Cleanup
+  }, []);
 
   const filteredAndSortedAsteroids = useMemo(() => {
     let filtered = [...asteroids];
@@ -47,7 +55,6 @@ const Dashboard = () => {
         filtered = filtered.filter(a => a.isHazardous);
       }
     }
-
 
     if (sortBy === 'risk-desc') {
       filtered.sort((a, b) => (b.riskScore ?? 0) - (a.riskScore ?? 0));
@@ -69,7 +76,7 @@ const Dashboard = () => {
   const stats = useMemo(() => {
     const total = asteroids.length;
     const hazardous = asteroids.filter(a => a.isHazardous || a.riskScore > 75).length;
-    const safe = total - hazardous;
+    // const safe = total - hazardous; // Removed in favor of Watchlist
     
     const closest = asteroids.reduce((prev, curr) => 
       (!prev.distance || curr.distance < prev.distance) ? curr : prev, asteroids[0] || {}
@@ -78,62 +85,16 @@ const Dashboard = () => {
       ((curr.riskScore ?? 0) > (prev.riskScore ?? 0)) ? curr : prev, asteroids[0] || null
     );
 
-    return { total, hazardous, safe, closest, highestRisk };
+    return { total, hazardous, closest, highestRisk };
   }, [asteroids]);
 
   if (loading) {
+    // Keep your existing loading skeleton here
     return (
       <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto">
-       
-        <div className="flex items-center justify-between">
-          <div className="h-10 w-56 rounded-lg bg-white/5 animate-pulse" />
-          <div className="h-9 w-40 rounded-lg bg-white/5 animate-pulse" />
-        </div>
-
-        
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="rounded-2xl border border-white/10 glass-card p-6 animate-pulse">
-              <div className="flex justify-between mb-4">
-                <div className="space-y-2 flex-1">
-                  <div className="h-3 w-20 rounded bg-white/10" />
-                  <div className="h-10 w-16 rounded bg-white/10" />
-                  <div className="h-3 w-24 rounded bg-white/5" />
-                </div>
-                <div className="h-14 w-14 rounded-xl bg-white/10" />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 sm:p-6">
-          <div className="flex justify-between mb-6">
-            <div className="h-7 w-40 rounded bg-white/5 animate-pulse" />
-            <div className="h-7 w-20 rounded bg-white/5 animate-pulse" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="rounded-2xl border border-white/10 glass-card p-5 animate-pulse">
-                <div className="flex justify-between mb-4">
-                  <div className="h-5 w-32 rounded bg-white/10" />
-                  <div className="h-6 w-16 rounded-full bg-white/10" />
-                </div>
-                <div className="h-2 rounded-full bg-white/5 mb-4" />
-                <div className="h-16 rounded-xl bg-white/5 mb-3" />
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="h-14 rounded-xl bg-white/5" />
-                  <div className="h-14 rounded-xl bg-white/5" />
-                  <div className="h-14 rounded-xl bg-white/5 col-span-2" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="flex flex-col items-center justify-center py-16 text-gray-500">
           <Sparkles className="h-12 w-12 animate-pulse text-accent-purple mb-3" />
           <p className="text-sm font-medium">Initializing Deep Space Network...</p>
-          <p className="text-xs mt-1">Fetching asteroid data from NASA</p>
         </div>
       </div>
     );
@@ -155,40 +116,45 @@ const Dashboard = () => {
       </div>
 
       <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
+        {/* Card 1: Asteroids Today */}
         <StatCard
-          title="Total Objects"
+          title="Asteroids Today"
           value={stats.total}
           subtitle="Tracked in last 24h"
           icon={Telescope}
           variant="blue"
         />
+        {/* Card 2: Potential Hazards */}
         <StatCard
-          title="Threat Level"
+          title="Potential Hazards"
           value={stats.hazardous}
-          subtitle="Potentially hazardous"
+          subtitle="High risk trajectory"
           icon={AlertTriangle}
           variant={stats.hazardous > 0 ? 'red' : 'neutral'}
           pulse={stats.hazardous > 0}
         />
+        {/* Card 3: Closest Approach */}
         <StatCard
-          title="Safe Objects"
-          value={stats.safe}
-          subtitle="Low risk trajectory"
-          icon={ShieldCheck}
-          variant="green"
-        />
-        <StatCard
-          title="Closest Pass"
+          title="Closest Approach"
           value={`${(stats.closest?.distance / 1000000).toFixed(1)}M`}
           subtitle={stats.closest?.name?.replace(/[()]/g, '') || 'N/A'}
           icon={Activity}
           variant="amber"
+        />
+        {/* Card 4: Watchlist (Placeholder for Phase 3 UI) */}
+        <StatCard
+          title="User Watchlist"
+          value="0"
+          subtitle="Saved objects"
+          icon={Star}
+          variant="purple"
         />
       </div>
 
       {stats.highestRisk && stats.highestRisk.riskScore > 75 && (
         <FeaturedAsteroidCard data={stats.highestRisk} />
       )}
+      
       <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 sm:p-6">
         <div className="flex flex-col gap-4 mb-6">
           <div className="flex items-center justify-between">
