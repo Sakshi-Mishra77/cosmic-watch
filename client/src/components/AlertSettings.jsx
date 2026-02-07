@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Bell, ShieldAlert, Save, Mail } from 'lucide-react'; // Added Mail icon
+import { Bell, ShieldAlert, Save, Mail } from 'lucide-react';
+import { Button } from './ui/button';
+import { Label } from './ui/label';
+import { Slider } from './ui/slider';
+import { Switch } from './ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 const AlertSettings = () => {
   const [prefs, setPrefs] = useState({ 
@@ -14,7 +20,6 @@ const AlertSettings = () => {
     const fetchPrefs = async () => {
       try {
         const { data } = await api.get('/alerts/preferences');
-        // Ensure we merge with defaults in case backend returns partial data
         if (data) setPrefs(prev => ({ ...prev, ...data }));
       } catch (err) {
         console.error("Failed to load preferences", err);
@@ -37,71 +42,98 @@ const AlertSettings = () => {
   };
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl mb-6">
-      <div className="flex items-center gap-2 mb-6 text-white font-bold text-lg border-b border-white/10 pb-4">
-        <Bell className="text-accent-purple" /> Alert Configuration
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Risk Score Slider */}
-        <div className="space-y-3">
-          <label className="text-gray-400 text-sm flex justify-between">
-            <span>Minimum Risk Score Threshold</span>
-            <span className="text-accent-purple font-mono">{prefs.minRiskScore}</span>
-          </label>
-          <input 
-            type="range" 
-            min="0" 
-            max="100" 
-            className="w-full accent-accent-purple h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer" 
-            value={prefs.minRiskScore} 
-            onChange={(e) => setPrefs({...prefs, minRiskScore: Number(e.target.value)})} 
-          />
-          <p className="text-xs text-gray-500">Alerts will trigger for asteroids exceeding this score.</p>
-        </div>
-
-        {/* Email Frequency - ADDED THIS SECTION */}
-        <div className="space-y-3">
-          <label className="text-gray-400 text-sm flex items-center gap-2">
-            <Mail className="w-4 h-4" /> Email Frequency
-          </label>
-          <select 
-            className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:border-accent-purple outline-none transition-colors"
-            value={prefs.emailFrequency}
-            onChange={(e) => setPrefs({...prefs, emailFrequency: e.target.value})}
-          >
-            <option value="daily">Daily Summary (09:00 AM)</option>
-            <option value="weekly">Weekly Digest</option>
-            <option value="never">Do Not Send Emails</option>
-          </select>
-        </div>
-
-        {/* Imminent Notification Toggle */}
-        <div className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/5">
-          <div className="flex items-center gap-3">
-            <ShieldAlert className={`w-5 h-5 ${prefs.notifyImminent ? 'text-red-400' : 'text-gray-500'}`} />
-            <span className="text-white text-sm">Notify on Imminent Approaches</span>
+    <Card className="mb-6">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-accent-purple/20 border border-accent-purple/30">
+            <Bell className="text-accent-purple w-5 h-5" />
           </div>
-          <input 
-            type="checkbox" 
-            className="w-5 h-5 accent-accent-purple rounded cursor-pointer"
-            checked={prefs.notifyImminent} 
-            onChange={(e) => setPrefs({...prefs, notifyImminent: e.target.checked})} 
-          />
+          <div>
+            <CardTitle>Alert Configuration</CardTitle>
+            <CardDescription>Customize your email notification preferences</CardDescription>
+          </div>
         </div>
+      </CardHeader>
 
-        {/* Save Button */}
-        <div className="flex items-end">
-          <button 
-            onClick={handleSave} 
-            disabled={saving} 
-            className="w-full bg-accent-purple hover:bg-accent-purple/90 text-white font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50"
-          >
-            <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Configuration'}
-          </button>
+      <CardContent className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Risk Score Slider */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="risk-threshold" className="flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4" />
+                Risk Threshold
+              </Label>
+              <span className="text-accent-purple font-mono font-bold text-base px-2 py-1 bg-accent-purple/10 rounded-lg">
+                {prefs.minRiskScore}
+              </span>
+            </div>
+            <Slider
+              id="risk-threshold"
+              min={0}
+              max={100}
+              step={1}
+              value={[prefs.minRiskScore]}
+              onValueChange={(value) => setPrefs({...prefs, minRiskScore: value[0]})}
+            />
+            <p className="text-xs text-gray-500">Alert me for asteroids with risk score above this value.</p>
+          </div>
+
+          {/* Email Frequency */}
+          <div className="space-y-4">
+            <Label htmlFor="email-frequency" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              Email Frequency
+            </Label>
+            <Select 
+              value={prefs.emailFrequency}
+              onValueChange={(value) => setPrefs({...prefs, emailFrequency: value})}
+            >
+              <SelectTrigger id="email-frequency">
+                <SelectValue placeholder="Select frequency" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Daily Summary (09:00 AM)</SelectItem>
+                <SelectItem value="weekly">Weekly Digest</SelectItem>
+                <SelectItem value="never">Do Not Send Emails</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-gray-500">Choose how often you want to receive email alerts.</p>
+          </div>
+
+          {/* Imminent Notification Toggle */}
+          <div className="flex items-center justify-between bg-white/[0.06] p-4 rounded-xl border border-white/10 hover:border-white/20 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg transition-colors ${prefs.notifyImminent ? 'bg-red-500/20' : 'bg-white/10'}`}>
+                <Bell className={`w-4 h-4 ${prefs.notifyImminent ? 'text-red-400' : 'text-gray-500'}`} />
+              </div>
+              <div className="space-y-0.5">
+                <Label htmlFor="imminent-alerts" className="text-white font-medium cursor-pointer">Imminent Alerts</Label>
+                <p className="text-gray-500 text-xs font-normal">Notify for same-day approaches</p>
+              </div>
+            </div>
+            <Switch
+              id="imminent-alerts"
+              checked={prefs.notifyImminent}
+              onCheckedChange={(checked) => setPrefs({...prefs, notifyImminent: checked})}
+            />
+          </div>
+
+          {/* Save Button */}
+          <div className="flex items-end">
+            <Button 
+              onClick={handleSave} 
+              disabled={saving}
+              className="w-full"
+              size="lg"
+            >
+              <Save className="w-4 h-4" />
+              {saving ? 'Saving...' : 'Save Configuration'}
+            </Button>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
