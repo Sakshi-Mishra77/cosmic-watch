@@ -14,30 +14,27 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-space-950/80 backdrop-blur-md">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.08] bg-space-950/80 backdrop-blur-2xl shadow-[0_1px_0_0_rgba(255,255,255,0.03)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          
-          {/* LEFT: Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 bg-accent-purple/20 rounded-lg border border-accent-purple/30 group-hover:bg-accent-purple/40 transition-colors">
+        <div className="flex items-center justify-between h-16 md:h-[4.25rem]">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="p-2 rounded-xl bg-accent-purple/20 border border-accent-purple/30 group-hover:bg-accent-purple/30 group-hover:border-accent-purple/50 group-hover:shadow-[0_0_20px_-8px_rgba(139,92,246,0.4)] transition-all duration-200">
               <Rocket className="text-accent-purple h-5 w-5" />
             </div>
-            <span className="font-bold text-lg tracking-tight text-white">
+            <span className="font-heading font-bold text-lg tracking-tight text-white">
               Cosmic<span className="text-accent-purple">Watch</span>
             </span>
           </Link>
 
-          {/* MIDDLE: Navigation Links */}
-          <div className="hidden md:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10">
+          <div className="hidden md:flex items-center gap-0.5 p-1 rounded-2xl bg-white/[0.04] border border-white/10">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive(item.path)
-                    ? 'bg-accent-purple text-white shadow-lg shadow-purple-900/50'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-accent-purple/90 text-white shadow-[0_0_24px_-8px_rgba(139,92,246,0.5)] border border-accent-purple/30'
+                    : 'text-gray-400 hover:text-white hover:bg-white/8 border border-transparent'
                 }`}
               >
                 {item.icon}
@@ -46,22 +43,14 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* RIGHT: Profile */}
-          <div className="flex items-center gap-4">
-            {/* Notification Badge (Optional decoration for now) */}
-            <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
+          <div className="flex items-center gap-2">
+            <button className="relative p-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/8 transition-colors" aria-label="Notifications">
               <Bell size={20} />
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 border border-black"></span>
+              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-space-950" />
             </button>
-
-            {/* Profile Dropdown Trigger */}
-            <button className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-colors">
-              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold border-2 border-space-900">
-                SB
-              </div>
-              <span className="text-sm font-medium text-gray-300 hidden sm:block">
-                Profile
-              </span>
+            <button className="flex items-center gap-2 pl-1.5 pr-3.5 py-1.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-200">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-inner" />
+              <span className="text-sm font-medium text-gray-300 hidden sm:block">Profile</span>
             </button>
           </div>
         </div>

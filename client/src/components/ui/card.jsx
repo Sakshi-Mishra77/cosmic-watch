@@ -4,7 +4,7 @@ import { cn as utilsCn } from "../../lib/utils"
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={utilsCn("rounded-xl border border-white/10 bg-space-900 text-white shadow-sm hover:border-accent-purple/50 transition-colors", className)}
+    className={utilsCn("rounded-xl border border-white/10 bg-space-900/80 text-white shadow-sm backdrop-blur-sm hover:border-white/20 hover:shadow-[0_0_28px_-10px_rgba(0,0,0,0.25)] transition-all duration-200", className)}
     {...props}
   />
 ))

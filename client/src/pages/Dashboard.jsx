@@ -39,86 +39,123 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-[80vh] text-space-400">
-        <Activity className="h-12 w-12 animate-pulse mb-4 text-accent-purple" />
-        <p className="text-lg font-mono">Initializing Deep Space Network...</p>
+      <div className="p-6 space-y-8 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between">
+          <div className="h-9 w-48 rounded-lg bg-white/5 animate-pulse" />
+          <div className="h-9 w-36 rounded-lg bg-white/5 animate-pulse" />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="rounded-xl border border-white/10 glass-card p-6 animate-pulse">
+              <div className="flex justify-between mb-3">
+                <div className="h-4 w-24 rounded bg-white/10" />
+                <div className="h-8 w-8 rounded-lg bg-white/10" />
+              </div>
+              <div className="h-8 w-16 rounded bg-white/10 mb-2" />
+              <div className="h-3 w-20 rounded bg-white/5" />
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="rounded-xl border border-white/10 glass-card p-6 animate-pulse">
+              <div className="flex justify-between mb-4">
+                <div className="h-5 w-32 rounded bg-white/10" />
+                <div className="h-6 w-16 rounded-full bg-white/10" />
+              </div>
+              <div className="h-14 rounded-lg bg-white/5 mb-4" />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="h-10 rounded-lg bg-white/5" />
+                <div className="h-10 rounded-lg bg-white/5" />
+                <div className="h-10 rounded-lg bg-white/5 col-span-2" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col items-center justify-center py-16 text-gray-500">
+          <Activity className="h-10 w-10 animate-pulse text-accent-purple mb-3" />
+          <p className="text-sm font-medium">Initializing Deep Space Network...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 p-6">
-      {/* 3. Section Title */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight text-white">Live Monitor</h2>
-        <span className="text-sm text-gray-400 font-mono">
-          Last Updated: {new Date().toLocaleTimeString()}
+    <div className="space-y-8 p-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h2 className="font-heading text-3xl font-bold tracking-tight text-white">Live Monitor</h2>
+        <span className="text-sm text-gray-500 font-mono tabular-nums bg-white/[0.04] border border-white/10 px-3 py-1.5 rounded-lg">
+          Last updated {new Date().toLocaleTimeString()}
         </span>
       </div>
 
-      {/* 4. The "Command Center" Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        
-        {/* Card 1: Total Objects */}
-        <Card className="bg-space-900/50 border-white/10">
+        <Card className="glass-card border-white/10 hover:border-blue-500/30 hover:shadow-[0_0_24px_-8px_rgba(59,130,246,0.2)] transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Total Objects</CardTitle>
-            <Telescope className="h-4 w-4 text-blue-400" />
+            <div className="p-1.5 rounded-lg bg-blue-500/20 border border-blue-500/20">
+              <Telescope className="h-4 w-4 text-blue-400" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">{stats.total}</div>
-            <p className="text-xs text-gray-500">Tracked in last 24h</p>
+            <div className="font-heading text-2xl font-bold text-white">{stats.total}</div>
+            <p className="text-xs text-gray-500 mt-0.5">Tracked in last 24h</p>
           </CardContent>
         </Card>
 
-        {/* Card 2: Hazardous */}
-        <Card className="bg-space-900/50 border-white/10">
+        <Card className={`glass-card border-white/10 transition-all duration-200 ${stats.hazardous > 0 ? 'hover:border-red-500/30 hover:shadow-[0_0_24px_-8px_rgba(239,68,68,0.2)]' : 'hover:border-white/20'}`}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Threat Level</CardTitle>
-            <AlertTriangle className={`h-4 w-4 ${stats.hazardous > 0 ? 'text-red-500 animate-pulse' : 'text-gray-500'}`} />
+            <div className={`p-1.5 rounded-lg border ${stats.hazardous > 0 ? 'bg-red-500/20 border-red-500/30' : 'bg-white/10 border-white/10'}`}>
+              <AlertTriangle className={`h-4 w-4 ${stats.hazardous > 0 ? 'text-red-400 animate-pulse' : 'text-gray-500'}`} />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${stats.hazardous > 0 ? 'text-red-400' : 'text-white'}`}>
+            <div className={`font-heading text-2xl font-bold ${stats.hazardous > 0 ? 'text-red-400' : 'text-white'}`}>
               {stats.hazardous} Detected
             </div>
-            <p className="text-xs text-gray-500">Potentially Hazardous</p>
+            <p className="text-xs text-gray-500 mt-0.5">Potentially Hazardous</p>
           </CardContent>
         </Card>
 
-        {/* Card 3: Safe Objects */}
-        <Card className="bg-space-900/50 border-white/10">
+        <Card className="glass-card border-white/10 hover:border-green-500/30 hover:shadow-[0_0_24px_-8px_rgba(34,197,94,0.2)] transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Safe Objects</CardTitle>
-            <ShieldCheck className="h-4 w-4 text-green-400" />
+            <div className="p-1.5 rounded-lg bg-green-500/20 border border-green-500/20">
+              <ShieldCheck className="h-4 w-4 text-green-400" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-400">{stats.safe}</div>
-            <p className="text-xs text-gray-500">Low risk trajectory</p>
+            <div className="font-heading text-2xl font-bold text-green-400">{stats.safe}</div>
+            <p className="text-xs text-gray-500 mt-0.5">Low risk trajectory</p>
           </CardContent>
         </Card>
 
-        {/* Card 4: Closest Approach */}
-        <Card className="bg-space-900/50 border-white/10">
+        <Card className="glass-card border-white/10 hover:border-amber-500/30 hover:shadow-[0_0_24px_-8px_rgba(245,158,11,0.2)] transition-all duration-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-400">Closest Pass</CardTitle>
-            <Activity className="h-4 w-4 text-yellow-400" />
+            <div className="p-1.5 rounded-lg bg-amber-500/20 border border-amber-500/20">
+              <Activity className="h-4 w-4 text-amber-400" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">
+            <div className="font-heading text-2xl font-bold text-white">
               {(stats.closest?.distance / 1000000).toFixed(1)}M <span className="text-sm font-normal text-gray-500">km</span>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 mt-0.5 truncate">
               {stats.closest?.name?.replace(/[()]/g, '') || 'N/A'}
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* 5. Main Asteroid Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-4">
-        {asteroids.map((ast) => (
-          <AsteroidCard key={ast._id || ast.nasaId} data={ast} />
-        ))}
+      <div>
+        <h3 className="font-heading text-xl font-semibold text-white mb-4">Near-Earth Objects</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {asteroids.map((ast) => (
+            <AsteroidCard key={ast._id || ast.nasaId} data={ast} />
+          ))}
+        </div>
       </div>
     </div>
   );
