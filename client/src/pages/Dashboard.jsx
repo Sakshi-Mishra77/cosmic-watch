@@ -39,7 +39,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="p-6 space-y-8 max-w-7xl mx-auto">
+      <div className="p-4 sm:p-6 space-y-6 sm:space-y-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between">
           <div className="h-9 w-48 rounded-lg bg-white/5 animate-pulse" />
           <div className="h-9 w-36 rounded-lg bg-white/5 animate-pulse" />
@@ -81,10 +81,10 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-8 p-6 max-w-7xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 p-4 sm:p-6 max-w-7xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <h2 className="font-heading text-3xl font-bold tracking-tight text-white">Live Monitor</h2>
-        <span className="text-sm text-gray-500 font-mono tabular-nums bg-white/[0.04] border border-white/10 px-3 py-1.5 rounded-lg">
+        <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">Live Monitor</h2>
+        <span className="text-xs sm:text-sm text-gray-500 font-mono tabular-nums bg-white/[0.04] border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-lg truncate max-w-[180px] sm:max-w-none">
           Last updated {new Date().toLocaleTimeString()}
         </span>
       </div>
@@ -150,8 +150,8 @@ const Dashboard = () => {
       </div>
 
       <div>
-        <h3 className="font-heading text-xl font-semibold text-white mb-4">Near-Earth Objects</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <h3 className="font-heading text-lg sm:text-xl font-semibold text-white mb-3 sm:mb-4">Near-Earth Objects</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {asteroids.map((ast) => (
             <AsteroidCard key={ast._id || ast.nasaId} data={ast} />
           ))}

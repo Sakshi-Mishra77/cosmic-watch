@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col bg-space-950">
       {/* ================= HERO: left text, right Three.js globe+asteroids ================= */}
-      <section className="relative min-h-[100vh] flex flex-col overflow-hidden bg-noise" id="hero">
+      <section className="relative min-h-[100dvh] sm:min-h-[100vh] flex flex-col overflow-hidden bg-noise" id="hero">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 hero-mesh" aria-hidden />
           <div className="absolute inset-0 hero-stars opacity-50" />
@@ -30,7 +30,7 @@ const Home = () => {
           <div className="hero-glow absolute top-0 right-0 w-[50vmin] h-[50vmin] max-w-[400px] rounded-full bg-accent-purple/15 blur-[80px] pointer-events-none" aria-hidden />
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
+        <div className="relative z-10 flex-1 flex flex-col justify-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-6 sm:pb-8">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left: all text left-aligned */}
             <div className="order-2 lg:order-1 flex flex-col justify-center text-left">
@@ -146,11 +146,11 @@ const Home = () => {
       </section>
 
       {/* ================= FEATURES ================= */}
-      <section className="relative py-28 border-t border-white/5" id="features">
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 border-t border-white/5" id="features">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <p className="landing-label mb-4">Features</p>
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4">
               Planetary Defense System
             </h2>
             <div className="headline-underline-wide mx-auto" />
@@ -215,11 +215,11 @@ const Home = () => {
       </section>
 
       {/* ================= DASHBOARD PREVIEW ================= */}
-      <section className="relative py-28 border-t border-white/5 bg-grid bg-white/[0.01]">
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 border-t border-white/5 bg-grid bg-white/[0.01]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10 sm:mb-16">
             <p className="landing-label mb-4">Product</p>
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4">
               See It In Action
             </h2>
             <div className="headline-underline-wide mx-auto" />
@@ -234,8 +234,8 @@ const Home = () => {
               <span className="font-heading font-semibold text-white">Live Monitor</span>
               <span className="ml-auto text-xs text-gray-500 font-mono">Last updated: live</span>
             </div>
-            <div className="p-6 md:p-8">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="p-4 sm:p-6 md:p-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 {[
                   { label: 'Total Objects', value: '24', icon: Globe, iconClass: 'text-blue-400' },
                   { label: 'Threat Level', value: '2', icon: Zap, iconClass: 'text-red-400' },
@@ -280,11 +280,11 @@ const Home = () => {
       </section>
 
       {/* ================= HOW IT WORKS ================= */}
-      <section className="relative py-28 border-t border-white/5" id="how-it-works">
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 border-t border-white/5" id="how-it-works">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <p className="landing-label mb-4">Process</p>
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4">
               How It Works
             </h2>
             <div className="headline-underline-wide mx-auto" />
@@ -320,11 +320,11 @@ const Home = () => {
       </section>
 
       {/* ================= WHY IT MATTERS ================= */}
-      <section className="relative py-28 border-t border-white/5 bg-white/[0.01]">
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-28 border-t border-white/5 bg-white/[0.01]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="landing-label mb-4">Mission</p>
-          <BarChart3 className="mx-auto w-12 h-12 text-accent-purple/80 mb-6" />
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
+          <BarChart3 className="mx-auto w-10 h-10 sm:w-12 sm:h-12 text-accent-purple/80 mb-6" />
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
             Why Space Situational Awareness Matters
           </h2>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8">
@@ -345,12 +345,12 @@ const Home = () => {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="relative py-32 border-t border-white/5 bg-gradient-to-b from-accent-purple/10 via-accent-purple/5 to-transparent overflow-hidden">
+      <section className="relative py-20 sm:py-24 md:py-28 lg:py-32 border-t border-white/5 bg-gradient-to-b from-accent-purple/10 via-accent-purple/5 to-transparent overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-accent-purple/20 blur-[120px]" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
             Ready to monitor the sky?
           </h2>
           <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-xl mx-auto">
@@ -379,8 +379,8 @@ const Home = () => {
 
       {/* ================= FOOTER ================= */}
       <footer className="mt-auto border-t border-white/[0.08] bg-space-900/95 backdrop-blur-sm bg-gradient-to-b from-transparent to-space-950/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 mb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 md:gap-8 mb-10 sm:mb-16">
             <div className="col-span-2 md:col-span-1">
               <Link to="/" className="inline-flex items-center gap-2 mb-5 group">
                 <div className="p-2 rounded-xl bg-accent-purple/20 border border-accent-purple/30 group-hover:shadow-[0_0_20px_-8px_rgba(139,92,246,0.4)] transition-shadow">
