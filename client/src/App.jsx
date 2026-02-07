@@ -4,6 +4,10 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
+
+import Register from './pages/Register'; 
+import Watchlist from './pages/Watchlist';
+import Alerts from './pages/Alerts';
 import Register from './pages/Register';
 import Watchlist from './pages/Watchlist';
 import AsteroidDetail from './pages/AsteroidDetail';
