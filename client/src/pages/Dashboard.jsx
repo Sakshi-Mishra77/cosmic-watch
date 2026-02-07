@@ -4,7 +4,8 @@ import AsteroidCard from '../components/AsteroidCard';
 import StatCard from '../components/StatCard';
 import FeaturedAsteroidCard from '../components/FeaturedAsteroidCard';
 import DashboardControls from '../components/DashboardControls';
-import { Activity, AlertTriangle, Telescope, Sparkles, Star, ShieldCheck } from 'lucide-react';
+import AlertSettings from '../components/AlertSettings'; // <--- IMPORT
+import { Activity, AlertTriangle, Telescope, Sparkles, Star, Settings } from 'lucide-react'; // <--- IMPORT Settings
 
 const Dashboard = () => {
   const [asteroids, setAsteroids] = useState([]);
@@ -12,6 +13,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRisk, setFilterRisk] = useState('all');
   const [sortBy, setSortBy] = useState('risk-desc');
+  const [showSettings, setShowSettings] = useState(false); // <--- STATE
 
   const fetchData = async () => {
     try {
@@ -104,10 +106,29 @@ const Dashboard = () => {
           </h2>
           <p className="text-sm text-gray-500 mt-1">Real-time NEO tracking powered by NASA</p>
         </div>
-        <span className="text-xs sm:text-sm text-gray-500 font-mono tabular-nums bg-white/[0.04] border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-lg truncate max-w-[180px] sm:max-w-none">
-          Last updated {new Date().toLocaleTimeString()}
-        </span>
+        
+        {/* --- CONTROLS SECTION --- */}
+        <div className="flex items-center gap-3">
+          {/* Settings Button */}
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className={`p-2 rounded-lg transition-colors border ${showSettings ? 'bg-accent-purple text-white border-accent-purple' : 'bg-white/[0.04] border-white/10 text-gray-400 hover:text-white'}`}
+          >
+            <Settings className="w-5 h-5" />
+          </button>
+          
+          <span className="text-xs sm:text-sm text-gray-500 font-mono tabular-nums bg-white/[0.04] border border-white/10 px-2.5 sm:px-3 py-1.5 rounded-lg truncate max-w-[180px] sm:max-w-none">
+            Last updated {new Date().toLocaleTimeString()}
+          </span>
+        </div>
       </div>
+
+      {/* --- CONDITIONAL RENDER --- */}
+      {showSettings && (
+        <div className="animate-in slide-in-from-top-4 duration-300">
+          <AlertSettings />
+        </div>
+      )}
 
       <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
     
