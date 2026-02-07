@@ -12,7 +12,8 @@ const asteroidSchema = new mongoose.Schema({
   },
   diameter: Number,      
   velocity: Number,       
-  distance: Number,       
+  distance: Number,
+  riskScore: Number,       
   isHazardous: Boolean,   
   approachDate: String,   
   lastUpdated: { 

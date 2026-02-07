@@ -24,6 +24,10 @@ export const fetchAsteroidData = async () => {
     const operations = asteroidsList.map(ast => {
       const riskScore = calculateRiskScore(ast);
       
+      
+      const velocity = parseFloat(ast.close_approach_data[0]?.relative_velocity?.kilometers_per_hour || 0);
+      const distance = parseFloat(ast.close_approach_data[0]?.miss_distance?.kilometers || 0);
+      
       return {
         updateOne: {
           filter: { nasaId: ast.id },
@@ -31,11 +35,11 @@ export const fetchAsteroidData = async () => {
             nasaId: ast.id,
             name: ast.name,
             diameter: ast.estimated_diameter.meters.estimated_diameter_max,
-            velocity: parseFloat(ast.close_approach_data[0].relative_velocity.kilometers_per_hour),
-            distance: parseFloat(ast.close_approach_data[0].miss_distance.kilometers),
+            velocity: velocity,
+            distance: distance,
             isHazardous: ast.is_potentially_hazardous_asteroid,
             riskScore: riskScore,
-            approachDate: ast.close_approach_data[0].close_approach_date_full,
+            approachDate: ast.close_approach_data[0]?.close_approach_date_full,
             lastUpdated: new Date()
           },
           upsert: true 
@@ -43,11 +47,25 @@ export const fetchAsteroidData = async () => {
       };
     });
 
+    
     if (operations.length > 0) {
       await Asteroid.bulkWrite(operations);
-      console.log(` Processed and cached ${operations.length} asteroids.`);
+      console.log(`✅ Processed and cached ${operations.length} asteroids.`);
     }
+
+    
+    return await Asteroid.find();
+
   } catch (error) {
-    console.error(' Error fetching NASA data:', error.message);
+    console.error('⚠️ NASA API Failed:', error.message);
+    
+    console.log('🔄 Serving cached data from MongoDB...');
+    const cachedData = await Asteroid.find();
+    
+    if (cachedData.length === 0) {
+      throw new Error('No cached data available and API is down.');
+    }
+    
+    return cachedData;
   }
 };
