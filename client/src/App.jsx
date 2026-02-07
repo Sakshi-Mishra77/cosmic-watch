@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext'; // Import Provider
+import { AuthProvider } from './context/AuthContext'; 
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register'; // Import Register
+import Register from './pages/Register'; 
 import Watchlist from './pages/Watchlist';
-const Alerts = () => <div className="pt-32 text-center text-gray-500">Alerts (Protected)</div>;
+import Alerts from './pages/Alerts';
 
 function App() {
   return (
